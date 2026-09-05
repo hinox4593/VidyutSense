@@ -91,7 +91,7 @@ The prototype will explore controlled classification between:
 
 ##  System Architecture
 
-```text
+
 Electrical Load
       │
       ▼
@@ -130,7 +130,7 @@ Electrical Load
                ▼
           Dashboard
 
-```markdown
+
 ---
 
 
