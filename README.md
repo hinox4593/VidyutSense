@@ -89,46 +89,39 @@ The prototype will explore controlled classification between:
 2. Legitimate abnormal/high-load behavior
 3. Suspicious/anomalous electrical signatures
 
-##  System Architecture
+## ⚙️ System Architecture
 
+```mermaid
+flowchart LR
+    A[Electrical Load] --> B[CT + Voltage Sensing]
+    B --> C[Signal Conditioning]
+    C --> D[ADC / Waveform Acquisition]
 
-Electrical Load
-      │
-      ▼
-┌──────────────────────┐
-│ CT + Voltage Sensing │
-└──────────┬───────────┘
-           ▼
-┌──────────────────────┐
-│ Signal Conditioning  │
-└──────────┬───────────┘
-           ▼
-┌──────────────────────┐
-│ ADC / Waveform       │
-│ Acquisition          │
-└──────────┬───────────┘
-           ▼
-┌─────────────────────────────┐
-│          EDGE MCU           │
-│                             │
-│ RMS │ Power │ PF │ FFT      │
-│ Harmonics │ Transients      │
-└──────────────┬──────────────┘
-               ▼
-        Feature Vector
-               │
-               ▼
-┌─────────────────────────────┐
-│ Lightweight Classifier      │
-└──────────────┬──────────────┘
-               ▼
-   Classification + Confidence
-               │
-               ▼
-      Compact Event Metadata
-               │
-               ▼
-          Dashboard
+    D --> E[Edge MCU]
+
+    E --> F[RMS / Power / PF]
+    E --> G[FFT / Harmonics]
+    E --> H[Transient Detection]
+
+    F --> I[Feature Vector]
+    G --> I
+    H --> I
+
+    I --> J[Lightweight Classifier]
+    J --> K[Classification + Confidence]
+    K --> L[Compact Event Metadata]
+    L --> M[Dashboard]
+```
+
+### Processing Flow
+
+**Sense → Sample → Process → Extract → Classify → Transmit → Act**
+
+- **Sensing:** Capture electrical behavior using non-invasive current and isolated voltage sensing.
+- **Edge DSP:** Extract RMS, power, power factor, harmonic and transient features locally.
+- **Edge AI:** Classify the resulting electrical signature using a lightweight model.
+- **Communication:** Transmit compact event metadata instead of continuously sending raw waveforms.
+- **Dashboard:** Display event classification, confidence and relevant diagnostic features.
 
 
 ---
